@@ -11,6 +11,7 @@ import {View} from 'react-native';
 import {Scene, Router, Actions, Reducer, ActionConst, Modal, Stack, Lightbox} from "react-native-router-flux"
 
 import MainPage from './src/components/base/TabBarContainer'
+import HomeDetail from './src/pages/home/homeDetail'
 
 const getSceneStyle = () => ({
   backgroundColor: 'black',
@@ -20,9 +21,17 @@ const getSceneStyle = () => ({
 
 const scenes = Actions.create(
   <Scene key="root" hideNavBar>
-     <Stack key="init" >
-        <Scene key="main" title="测试" initial component={MainPage}/>
-     </Stack>
+      <Modal key="modal" hideNavBar>
+        {/* <Lightbox key="lightbox" hideNavBar={true}> 用于将组件渲染在当前Scene的组件上，多用于Loading、弹框等 */}
+          <Stack key="init" >
+              <Scene key="main" title="测试" initial component={MainPage}/>
+              <Scene key="homeDetail" hideNavBar component={HomeDetail}/>
+          </Stack>
+        {/* </Lightbox> */}
+         {/* <Stack key="modalRoot">
+              <Scene key="homeDetail" hideNavBar component={HomeDetail}/>
+          </Stack> */}
+      </Modal>
   </Scene>
 )
 
