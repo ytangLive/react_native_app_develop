@@ -85,7 +85,7 @@ const handleUrl = url => params => {
            if(response && response.res === responseType.RESPONSE_SUCCESS){
                return response
            }else{
-               // 非 200，错误处理
+               return response
            }
        }).catch((error) => {
            console.log(error);
@@ -114,7 +114,7 @@ const handleUrl = url => params => {
           if(response && response.res === responseType.RESPONSE_SUCCESS){
               return response
           }else{
-            // 非 200，错误处理
+              return response
           }
        }).catch((error) => {
           console.log(error);

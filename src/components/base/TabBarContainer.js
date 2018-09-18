@@ -7,7 +7,7 @@ import {StyleSheet, View, Image} from 'react-native'
 import TabNavigator from 'react-native-tab-navigator'
 import commonStyle from '../../utils/commonStyle'
 import deviceInfo from '../../utils/deviceInfo'
-import {Icon} from '../../utils/icon'
+import {Icon} from '../../utils'
 
 import HomePage from '../../pages/home'
 

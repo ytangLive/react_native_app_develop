@@ -39,7 +39,7 @@ import {dataCache} from '../catch'
         return promise
      }
 
-     dataCache(url, fetchFunc, isCache)
+     return dataCache(url, fetchFunc, isCache)
  }
 
  /**

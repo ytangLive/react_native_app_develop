@@ -9,6 +9,8 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {Scene, Router, Actions, Reducer, ActionConst, Modal, Stack, Lightbox} from "react-native-router-flux"
+import {Provider, connect} from 'react-redux'
+import store from './src/store'
 
 import MainPage from './src/components/base/TabBarContainer'
 import HomeDetail from './src/pages/home/homeDetail'
@@ -47,4 +49,12 @@ class App extends Component {
   }
 }
 
-export default App
+const initApp = () => {
+  return (
+    <Provider store={store}>
+       <App/>
+    </Provider>
+  )
+}
+
+export default initApp

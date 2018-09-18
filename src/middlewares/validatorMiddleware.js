@@ -1,145 +1,89 @@
 /**
- * Created by ytang on 2018/9/14.
+ * Created by guangqiang on 2017/11/23.
  */
-
-'use strict'
 import {Toast} from '../components/toast'
+import {deepClone} from '../utils'
+export default validatorMiddleware = extraArgument => {
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
-});
+  return ({getState, dispatch}) => next => action => {
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+    // console.log('action:', action)
 
-var _lodashClonedeep = require('./deepClone');
+    let actionObj = action || {}
+    let payloadObj = actionObj.payload
+    let metaObj = action.meta || {}
+    let validatorObj = metaObj.validator || {}
 
-var _lodashClonedeep2 = _interopRequireDefault(_lodashClonedeep);
+    if (!metaObj.validator) {
+      return next(action)
+    }
 
-exports['default'] = function (options) {
+    let nextAction = undefined
+    let nextPayload = undefined
 
-  var validatorMiddleware = function validatorMiddleware(store) {
+    try {
+      nextPayload = action.payload.nextPayload
+    } catch (e) {
+      return next(action)
+    }
 
-    return function (next) {
+    if (nextPayload !== undefined) {
+      nextAction = deepClone(action)
+      nextAction.payload = nextPayload
+    }
 
-      return function (action) {
+    if (metaObj && (typeof nextPayload.promise === 'function') && validatorObj) {
 
-        if (!action[options.key] || !action[options.key].validator) {
-          return next(action);
-        }
+      if (Array.prototype.isPrototypeOf(validatorObj.data) && validatorObj.data.length > 0) {
 
-        // nextPayload
-        var nextAction = undefined;
+        let paramsArr = validatorObj.data || []
+        let func = null
+        let msg = ''
+        let isPassed = true
+        let params = payloadObj.params || {}
+        for (let i = 0; i < paramsArr.length; i ++) {
 
-        var nextPayload = undefined;
+          let item = paramsArr[i]
+          func = item.func
+          msg = item.msg
 
-        try {
-          nextPayload = action.payload.nextPayload;
-        } catch (e) {
-
-        }
-
-        if (nextPayload !== undefined) {
-          nextAction = (0, _lodashClonedeep2['default'])(action);
-          nextAction.payload = nextPayload;
-        }
-
-        // -----------
-
-        var flag = true;
-
-        var errorParam = undefined, errorId = undefined, errorMsg = undefined;
-
-        var validators = action[options.key].validator || {};
-
-        var runValidator = function runValidator(param, func, msg, id, key) {
-          var flag = undefined;
-
-          if (func) {
-            flag = func(param, store.getState(), action.payload);
-          } else {
-            throw new Error('validator func is needed');
-          }
-
-          if (typeof flag !== 'boolean') {
-            throw new Error('validator func must return boolean type');
-          }
-
-          if (!flag) {
-            errorParam = key;
-            errorId = id;
-            errorMsg = msg || '';
-          }
-          return flag;
-        };
-
-        var runValidatorContainer = function runValidatorContainer(validator, param, key) {
-          var flag = undefined;
-
-          if (Array.prototype.isPrototypeOf(validator)) {
-            for (var j in validator) {
-              var item = validator[j];
-              flag = runValidator(param, item.func, item.msg, j, key);
-              if (!flag) break;
+          if(typeof func === 'function') {
+            if (typeof func(params, getState(), payloadObj) !== 'boolean') {
+              throw new Error('validator func must return boolean type')
+            } else {
+              if (!func(params, getState(), payloadObj)) {
+                Toast.showWarning(msg)
+                isPassed = false
+                return {
+                  err: 'validator',
+                  msg: msg,
+                  params: params,
+                  id: i,
+                }
+              } else {
+                continue
+              }
             }
           } else {
-            flag = runValidator(param, validator.func, validator.msg, 0, key);
-          }
-          return flag;
-        };
-
-
-        if (typeof action.payload === 'object') {
-          for (var i in validators) {
-            var validator = validators[i];
-            if (action.payload[i]) {
-              flag = runValidatorContainer(validator, action.payload[i], i);
-              if (!flag)break;
-            }
+            throw new Error('validator func is needed')
           }
         }
 
-        // payload
-        var payloadValidator = validators.payload;
-        if (payloadValidator) {
-          flag = runValidatorContainer(payloadValidator, action.payload, 'payload');
-        }
-
-        // -------
-
-        // default
-        var defaultValidator = validators['default'];
-        if (defaultValidator) {
-          flag = runValidatorContainer(defaultValidator, undefined, 'default');
-        }
-
-        // -------
-
-        if (flag) {
-          action = nextAction || action;
+        if (isPassed) {
+          action = nextAction || action
           if (typeof action.payload.promise === 'function') {
+            let promise = action.payload.promise()
             action = {
               ...action,
               payload: {
                 ...action.payload,
-                promise: action.payload.promise(),
-              },
+                promise: promise,
+              }
             }
           }
-          return next(action);
-        } else {
-          Toast.showWarning(errorMsg)
-          return {
-            err: 'validator',
-            msg: errorMsg,
-            param: errorParam,
-            id: errorId,
-          };
+          return next(action)
         }
-      };
-    };
-  };
-
-  return validatorMiddleware;
-};
-
-module.exports = exports['default'];
+      }
+    }
+  }
+}
