@@ -2,14 +2,13 @@
  * Created by ytang on 2018/9/10.
  */
 
-import { Component } from 'react';
 import {connect} from 'react-redux'
-
+import { View } from 'react-native'
 import Action from '../../actions'
-import view from './view';
-import styles from './style';
+import {BaseComponent} from '../../components/base/BaseComponent'
+import HomeList from './homeList'
 
-class Home extends Component {
+class Home extends BaseComponent {
 
      constructor(props){
          super(props);
@@ -32,8 +31,16 @@ class Home extends Component {
         })
      }
 
-     render() {
-        return (view(this));
+     navigationBarProps(){
+        return {
+            title: '即将上映'
+        }
+    }
+
+     _render() {
+        return (
+            <HomeList homeDatas={self.state.comeingNewList} attentionDatas={self.state.attentionList}/>
+        )
      }
  }
 

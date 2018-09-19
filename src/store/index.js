@@ -11,9 +11,9 @@ import validator from '../middlewares/validatorMiddleware'
 import reducers from '../reducers'
 
 const middlewares = [
-    // validator(),
-    // thunkMiddleware,
-    // customThunk(),
+    validator(),
+    thunkMiddleware,
+    customThunk(),
     promiseMiddleware({promiseTypeSuffixes: ['LOADING', 'SUCCESS', 'ERROR']})
 ]
 

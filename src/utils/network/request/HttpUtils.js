@@ -4,6 +4,7 @@
 
 import {Component} from 'react'
 import responseType from '../../config/responseType'
+import {Toast} from '../../../components/toast'
 
 /**
  * fetch 网络请求的header，可自定义header 内容
@@ -79,7 +80,7 @@ const handleUrl = url => params => {
            if(response.ok){
             return response.json()
            }else{
-
+              Toast.show('服务器繁忙，请稍后再试；\r\nCode:' + response.status)
            }
        }).then((response) => {
            if(response && response.res === responseType.RESPONSE_SUCCESS){
@@ -88,7 +89,7 @@ const handleUrl = url => params => {
                return response
            }
        }).catch((error) => {
-           console.log(error);
+            Toast.show(error)
        })
    }
 
@@ -108,7 +109,7 @@ const handleUrl = url => params => {
           if(response.ok){
               return response.json()
           }else{
-
+              Toast.show('服务器繁忙，请稍后再试；\r\nCode:' + response.status)
           }
        }).then((response) => {
           if(response && response.res === responseType.RESPONSE_SUCCESS){
@@ -117,7 +118,7 @@ const handleUrl = url => params => {
               return response
           }
        }).catch((error) => {
-          console.log(error);
+           Toast.show(error)
        })
    }
  }
