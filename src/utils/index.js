@@ -3,7 +3,7 @@
  */
 
 import deviceInfo from './deviceInfo'
-import {commonStyle} from './commonStyle'
+import commonStyle from './commonStyle'
 import {deepClone} from './deepClone'
 import {Icon} from './icon'
 

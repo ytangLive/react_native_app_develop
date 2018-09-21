@@ -2,16 +2,16 @@
  * Created by ytang on 2018/9/10.
  */
 
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { View } from 'react-native'
 import Action from '../../actions'
 import {BaseComponent} from '../../components/base/BaseComponent'
-import HomeList from './homeList'
+import HomeListView from './homeListView'
 
 class Home extends BaseComponent {
 
-     constructor(props){
-         super(props);
+    constructor(props){
+         super(props)
          this.state = {
             refreshing: false,
             hasMore: true,
@@ -21,7 +21,7 @@ class Home extends BaseComponent {
          }
      }
 
-     componentDidMount() {
+    componentDidMount() {
         Promise.all([this.props.getMovieShowTimeList(), this.props.getMovieComeingNewList()]).then(response => {
             this.setState({
                 showTimeList: response[0].value.ms,
@@ -31,21 +31,22 @@ class Home extends BaseComponent {
         })
      }
 
-     navigationBarProps(){
+    navigationBarProps(){
         return {
-            title: '即将上映'
+            title: '即将上映',
+            hiddenLeftItem: true
         }
     }
 
-     _render() {
+    _render() {
         return (
-            <HomeList homeDatas={self.state.comeingNewList} attentionDatas={self.state.attentionList}/>
+            <HomeListView homeDatas={this.state.comeingNewList} attentionDatas={this.state.attentionList}/>
         )
      }
  }
 
-const HomeList = connect(
+const homeMain = connect(
      (state) => state.home.homeList, 
      Action.dispatch('home'))(Home)
 
-export default HomeList
+export default homeMain

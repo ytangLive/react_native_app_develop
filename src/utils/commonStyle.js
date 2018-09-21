@@ -31,7 +31,7 @@ export default commonStyle = {
   // 默认灰色字体颜色
   textGrayColor: '#989898',
   // 默认黑色字体颜色
-  textBlockColor: '#262626',
+  textBlackColor: '#262626',
   // 默认背景颜色
   bgColor: '#E6E6E6',
   // 默认分割线颜色

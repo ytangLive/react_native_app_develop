@@ -25,6 +25,10 @@ class BaseComponent extends Component {
         }
     }
 
+    superFunc(data) {
+        alert(`在子类中调用了父类的函数，${data}`)
+    }
+
     renderNavigationBar(){
         let navigationBarProps = this.navigationBarProps()
         Object.assign(navigationBarProps, this.props)
@@ -42,7 +46,7 @@ class BaseComponent extends Component {
     }
 
     onRightPress(){
-        
+        return null
     }
 
     _render(){

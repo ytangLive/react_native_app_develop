@@ -5,6 +5,7 @@
 import {Component} from 'react'
 import responseType from '../../config/responseType'
 import {Toast} from '../../../components/toast'
+import {RootHUD} from '../../../components/progressHUD'
 
 /**
  * fetch 网络请求的header，可自定义header 内容
@@ -73,6 +74,7 @@ const handleUrl = url => params => {
    */
 
    static getRequest = (url, params = {}) => {
+       RootHUD.show()
        return timeoutFetch(fetch(handleUrl(url)(params),{
           method: 'GET',
           headers: header
@@ -83,12 +85,14 @@ const handleUrl = url => params => {
               Toast.show('服务器繁忙，请稍后再试；\r\nCode:' + response.status)
            }
        }).then((response) => {
+           RootHUD.hidden()
            if(response && response.res === responseType.RESPONSE_SUCCESS){
                return response
            }else{
                return response
            }
        }).catch((error) => {
+            RootHUD.hidden()
             Toast.show(error)
        })
    }
@@ -101,6 +105,7 @@ const handleUrl = url => params => {
    * @returns {Promise}
    */
    static postRequest = (url, params = {}) => {
+       RootHUD.show()
        return timeoutFetch(fetch(handleUrl(url)(params),{
            method: 'POST',
            headers: header,
@@ -112,12 +117,14 @@ const handleUrl = url => params => {
               Toast.show('服务器繁忙，请稍后再试；\r\nCode:' + response.status)
           }
        }).then((response) => {
+          RootHUD.hidden()
           if(response && response.res === responseType.RESPONSE_SUCCESS){
               return response
           }else{
               return response
           }
        }).catch((error) => {
+           RootHUD.hidden()
            Toast.show(error)
        })
    }

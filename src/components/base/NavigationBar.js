@@ -51,7 +51,7 @@ export default class NavigationBar extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        this.navigationBarProps = Object.assign({}, defaultNavigationBarProps, props.navigationBarProps);
+        this.navigationBarProps = Object.assign({}, defaultNavigationBarProps, nextProps.navigationBarProps);
     }
 
     renderLeftItem(){
