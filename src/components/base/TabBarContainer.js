@@ -46,8 +46,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     tabBarStyle: {
-        height: commonStyle.tabBarHeight,
-        paddingBottom: deviceInfo.isIphoneX ? 34 : 0
+        height: commonStyle.tabBarHeight
     },
     tabText: {
         fontSize: 11,
