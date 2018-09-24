@@ -53,7 +53,7 @@ export default class HomeListView extends Component {
 
     renderRow(rowData, sectionId, rowId){
         return(
-           <View key={rowId} rowData={rowData}/>
+           <HomeListCell key={rowId} rowData={rowData}/>
         )
     }
 
