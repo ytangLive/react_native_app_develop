@@ -9,6 +9,7 @@ import commonStyle from '../../utils/commonStyle'
 import deviceInfo from '../../utils/deviceInfo'
 import {Icon} from '../../utils'
 
+import TabBarCustomButton from './TabBarCustomButton'
 import HomePage from '../../pages/home'
 
 export default class MainPage extends Component {
@@ -35,7 +36,22 @@ export default class MainPage extends Component {
                  >
                  <HomePage/>
                  </TabNavigator.Item>
+
+                 <TabNavigator.Item />
+
+                 <TabNavigator.Item 
+                   selected={this.state.selectedTab === 'Home1'}
+                   title="电影"
+                   titleStyle={styles.tabText}
+                   selectedTitleStyle={styles.selectedTabText}
+                   renderIcon={() => <Icon name={'YIcon|tb_Movie_o'} size={20} color={commonStyle.textGrayColor}/>}
+                   renderSelectedIcon={() => <Icon name={'YIcon|tb_Movie_o'} size={20} color={commonStyle.black}/>}
+                   onPress={() => this.setState({selectedTab : 'Home1'})}
+                 >
+                 <HomePage/>
+                 </TabNavigator.Item>
               </TabNavigator>
+              <TabBarCustomButton />
            </View>
         );
     }
